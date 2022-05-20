@@ -862,7 +862,7 @@ setMethod("plotGeneCov", signature("MeRIP.Peak"), function(object, geneName, lib
                           size.IP = object@sizeFactor$ip,
                           size.INPUT = object@sizeFactor$input,
                           rep("All samples",length(object@samplenames)), geneName,
-                          geneModel = object$geneModel,
+                          geneModel = object@geneModel,
                           libraryType, center, object@GTF ,ZoomIn, adjustExprLevel,adjustExpr_peak_range = NULL ,plotSNP = NULL , Names = samplenames(object) ) +
       theme(plot.title = element_text(hjust = 0.5,size = 15,face = "bold"),legend.position="none" )
                     
@@ -872,7 +872,7 @@ setMethod("plotGeneCov", signature("MeRIP.Peak"), function(object, geneName, lib
                    size.IP = object@sizeFactor$ip,
                    size.INPUT = object@sizeFactor$input,
                    rep("All samples",length(object@samplenames)), geneName,
-                   geneModel = object$geneModel,
+                   geneModel = object@geneModel,
                    libraryType, center, object@GTF ,ZoomIn, adjustExprLevel,adjustExpr_peak_range = NULL ,plotSNP = NULL  )+
     theme(plot.title = element_text(hjust = 0.5,size = 15,face = "bold"),legend.position="none" )
   }
