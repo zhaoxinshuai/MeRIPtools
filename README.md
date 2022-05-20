@@ -8,7 +8,7 @@ Guitar, stringr,vcfR,gamlss, broom, DESeq2
 
 	install.packages("devtools")
 	library(devtools)
-	install_github("scottzijiezhang/MeRIPtools")
+	install_github("zhaoxinshuai/MeRIPtools")
 	library("MeRIPtools")
 
 ## Manual page
