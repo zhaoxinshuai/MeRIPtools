@@ -287,13 +287,20 @@ reportJointPeak <- function(MeRIPdata, joint_threshold = 2,threads = 1){
     start_id <- which((ID[2:num_lines]-ID[1:num_lines-1]==1) |
                         ((geneBins$gene[2:num_lines]!=geneBins$gene[1:num_lines-1]) & (ID[2:num_lines] == TRUE)) )
     start_id <- start_id + 1 # add 1 since ID was counted from 2 to num_lines
-    if ( ID[1]==TRUE ) { start_id <- c(1,start_id) } # if the first checkpoint bin is peak
+    if ( ID[1]==TRUE ) { 
+      ID1 <- ID
+      ID1[2:num_lines]=FALSE
+      start_id <- c(which(ID1),start_id) }# if the first checkpoint bin is peak
 
     # end ids of checkpoints
     ## find peak-ending checkpoints (either from peak to nonpeak, or peak in a different batch)
     end_id <- which((ID[1:num_lines-1]-ID[2:num_lines]==1) |
                       ((geneBins$gene[1:num_lines-1]!=geneBins$gene[2:num_lines]) & (ID[1:num_lines-1] == TRUE)) )
-    if (ID[num_lines]==TRUE) {end_id <- c(end_id,num_lines)} # if the last checkpoint bin is peak
+    if (ID[num_lines]==TRUE) {
+      ID2<- ID
+      ID2[1:num_lines-1]=FALSE
+      end_id <- c(end_id,which(ID2))
+    }   # if the last checkpoint bin is peak
 
     peak_id_pairs <- cbind(start_id, end_id)
     num_peaks <- nrow(peak_id_pairs)
@@ -833,6 +840,9 @@ setMethod("extractInput", signature("MeRIP.Peak"), function(object){
 #' @param adjustExpr_peak_range The nucleotide range in which we quantify gene expression (from Input) and normalize coverages of all samples by gene expression so that IP coverage can be easily compared across conditions.
 #' @export
 setMethod("plotGeneCov", signature("MeRIP.Peak"), function(object, geneName, libraryType = "opposite", center = mean,ZoomIn = NULL, adjustExprLevel = FALSE , split = FALSE, adjustExpr_peak_range = NULL){
+  if
+  
+  
   if( nrow(variable(object))>0 ){
   X <- factor(variable(object)[,1], levels = unique( variable(object)[,1]) )
   if(split){
