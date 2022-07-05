@@ -840,9 +840,6 @@ setMethod("extractInput", signature("MeRIP.Peak"), function(object){
 #' @param adjustExpr_peak_range The nucleotide range in which we quantify gene expression (from Input) and normalize coverages of all samples by gene expression so that IP coverage can be easily compared across conditions.
 #' @export
 setMethod("plotGeneCov", signature("MeRIP.Peak"), function(object, geneName, libraryType = "opposite", center = mean,ZoomIn = NULL, adjustExprLevel = FALSE , split = FALSE, adjustExpr_peak_range = NULL){
-  if
-  
-  
   if( nrow(variable(object))>0 ){
   X <- factor(variable(object)[,1], levels = unique( variable(object)[,1]) )
   if(split){
