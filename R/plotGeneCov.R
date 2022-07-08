@@ -32,35 +32,65 @@ plotGeneCoverage <- function(IP_BAMs, INPUT_BAMs, size.IP, size.INPUT,X, geneNam
     ## add expression level adjust factor into library size factor
     size.INPUT.adj <- size.INPUT*cov.size
     size.IP.adj <- size.IP*cov.size
-    
-    registerDoParallel( length(levels(X)) )
-    INPUT.cov <- foreach(ii = levels(X),.combine = cbind)%dopar%{
-      getAveCoverage(geneModel= geneModel,bamFiles = INPUT_BAMs[X==ii],geneName = geneName,size.factor = size.INPUT.adj[X==ii], libraryType = libraryType, center = center,ZoomIn = ZoomIn)
+    if (  is.null(levels(X))) {
+      registerDoParallel( length(levels(X)) )
+      INPUT.cov <- foreach(ii = X[1],.combine = cbind)%do%{
+        getAveCoverage(geneModel= geneModel,bamFiles = INPUT_BAMs[X==ii],geneName = geneName,size.factor = size.INPUT.adj[X==ii], libraryType = libraryType, center = center,ZoomIn = ZoomIn)
+      }
+      IP.cov <- foreach(ii = X[1],.combine = cbind)%do%{
+        getAveCoverage(geneModel= geneModel,bamFiles = IP_BAMs[X==ii],geneName = geneName,size.factor = size.IP.adj[X==ii], libraryType = libraryType, center = center, ZoomIn = ZoomIn)
+      }
+      rm(list=ls(name=foreach:::.foreachGlobals), pos=foreach:::.foreachGlobals)
+      cov.data <- data.frame(genome_location=rep(as.numeric(rownames(as.data.frame(IP.cov)) ),1),
+                             IP=c(IP.cov),Input=c(INPUT.cov),
+                             Group = factor( rep(X[1],rep(nrow(as.data.frame(IP.cov)),1 ) ), levels = X[1] )
+      )
+    }else{
+      registerDoParallel( length(levels(X)) )
+      INPUT.cov <- foreach(ii = levels(X),.combine = cbind)%dopar%{
+        getAveCoverage(geneModel= geneModel,bamFiles = INPUT_BAMs[X==ii],geneName = geneName,size.factor = size.INPUT.adj[X==ii], libraryType = libraryType, center = center,ZoomIn = ZoomIn)
+      }
+      IP.cov <- foreach(ii = levels(X),.combine = cbind)%dopar%{
+        getAveCoverage(geneModel= geneModel,bamFiles = IP_BAMs[X==ii],geneName = geneName,size.factor = size.IP.adj[X==ii], libraryType = libraryType, center = center, ZoomIn = ZoomIn)
+      }
+      rm(list=ls(name=foreach:::.foreachGlobals), pos=foreach:::.foreachGlobals)
+      cov.data <- data.frame(genome_location=rep(as.numeric(rownames(as.data.frame(IP.cov)) ),length(levels(X))),
+                             IP=c(IP.cov),Input=c(INPUT.cov),
+                             Group = factor( rep(levels(X),rep(nrow(IP.cov),length(levels(X)) ) ), levels = levels(X) )
+      )
     }
-    IP.cov <- foreach(ii = levels(X),.combine = cbind)%dopar%{
-      getAveCoverage(geneModel= geneModel,bamFiles = IP_BAMs[X==ii],geneName = geneName,size.factor = size.IP.adj[X==ii], libraryType = libraryType, center = center, ZoomIn = ZoomIn)
-    }
-    rm(list=ls(name=foreach:::.foreachGlobals), pos=foreach:::.foreachGlobals)
   }else{
-    
-    registerDoParallel( length(levels(X)) )
-    INPUT.cov <- foreach(ii = levels(X),.combine = cbind)%dopar%{
-      getAveCoverage(geneModel= geneModel,bamFiles = INPUT_BAMs[X==ii],geneName = geneName,size.factor = size.INPUT[X==ii], libraryType = libraryType, center = center,ZoomIn = ZoomIn)
+    if (  is.null(levels(X))) {
+      registerDoParallel( length(levels(X)) )
+      INPUT.cov <- foreach(ii = X[1],.combine = cbind)%do%{
+        getAveCoverage(geneModel= geneModel,bamFiles = INPUT_BAMs[X==ii],geneName = geneName,size.factor = size.INPUT[X==ii], libraryType = libraryType, center = center,ZoomIn = ZoomIn)
+      }
+      IP.cov <- foreach(ii = X[1],.combine = cbind)%do%{
+        getAveCoverage(geneModel= geneModel,bamFiles = IP_BAMs[X==ii],geneName = geneName,size.factor = size.IP[X==ii], libraryType = libraryType, center = center, ZoomIn = ZoomIn)
+      }
+      rm(list=ls(name=foreach:::.foreachGlobals), pos=foreach:::.foreachGlobals)
+      
+      cov.data <- data.frame(genome_location=rep(as.numeric(rownames(as.data.frame(IP.cov)) ),1),
+                             IP=c(IP.cov),Input=c(INPUT.cov),
+                             Group = factor( rep(X[1],rep(nrow(as.data.frame(IP.cov)),1 ) ), levels = X[1] ) )
+      
     }
-    IP.cov <- foreach(ii = levels(X),.combine = cbind)%dopar%{
-      getAveCoverage(geneModel= geneModel,bamFiles = IP_BAMs[X==ii],geneName = geneName,size.factor = size.IP[X==ii], libraryType = libraryType, center = center, ZoomIn = ZoomIn)
-    }
-    rm(list=ls(name=foreach:::.foreachGlobals), pos=foreach:::.foreachGlobals)
-    
-  }
+    else{
+      registerDoParallel( length(levels(X)) )
+      INPUT.cov <- foreach(ii = levels(X),.combine = cbind)%dopar%{
+        getAveCoverage(geneModel= geneModel,bamFiles = INPUT_BAMs[X==ii],geneName = geneName,size.factor = size.INPUT[X==ii], libraryType = libraryType, center = center,ZoomIn = ZoomIn)
+      }
+      IP.cov <- foreach(ii = levels(X),.combine = cbind)%dopar%{
+        getAveCoverage(geneModel= geneModel,bamFiles = IP_BAMs[X==ii],geneName = geneName,size.factor = size.IP[X==ii], libraryType = libraryType, center = center, ZoomIn = ZoomIn)
+      }
+      rm(list=ls(name=foreach:::.foreachGlobals), pos=foreach:::.foreachGlobals)
+      
+      cov.data <- data.frame(genome_location=rep(as.numeric(rownames(as.data.frame(IP.cov)) ),length(levels(X))),
+                             IP=c(IP.cov),Input=c(INPUT.cov),
+                             Group = factor( rep(levels(X),rep(nrow(IP.cov),length(levels(X)) ) ), levels = levels(X) )
+      )
+    }}
   
-
-
-
-  cov.data <- data.frame(genome_location=rep(as.numeric(rownames(IP.cov) ),length(levels(X))),
-                         IP=c(IP.cov),Input=c(INPUT.cov),
-                         Group = factor( rep(levels(X),rep(nrow(IP.cov),length(levels(X)) ) ), levels = levels(X) )
-  )
   yscale <- max(IP.cov,INPUT.cov)
 
   chr <- unique(as.character(as.data.frame(geneModel[geneName])$seqnames))
