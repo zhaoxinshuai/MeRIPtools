@@ -871,7 +871,7 @@ setMethod("plotGeneCov", signature("MeRIP.Peak"), function(object, geneName, lib
                           rep("All samples",length(object@samplenames)), geneName,
                           geneModel = object@geneModel,
                           libraryType, center, object@GTF ,ZoomIn, adjustExprLevel,adjustExpr_peak_range = NULL ,plotSNP = NULL , Names = samplenames(object) ) +
-      theme(plot.title = element_text(hjust = 0.5,size = 15,face = "bold"),legend.position="none" )
+      theme(plot.title = element_text(hjust = 0.5,size = 15,face = "bold"),legend.title =  element_text(hjust = 0.5,size = 13,face = "bold"),legend.text =  element_text(size = 12,face = "bold"))
                     
   }else{
     plotGeneCoverage(IP_BAMs = IP.files(object),
@@ -881,7 +881,7 @@ setMethod("plotGeneCov", signature("MeRIP.Peak"), function(object, geneName, lib
                    rep("All samples",length(object@samplenames)), geneName,
                    geneModel = object@geneModel,
                    libraryType, center, object@GTF ,ZoomIn, adjustExprLevel,adjustExpr_peak_range = NULL ,plotSNP = NULL  )+
-    theme(plot.title = element_text(hjust = 0.5,size = 15,face = "bold"),legend.position="none" )
+    theme(plot.title = element_text(hjust = 0.5,size = 15,face = "bold"),legend.title =  element_text(hjust = 0.5,size = 13,face = "bold"),legend.text =  element_text(size = 12,face = "bold") )
   }
   
 }
