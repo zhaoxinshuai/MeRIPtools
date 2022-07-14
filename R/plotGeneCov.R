@@ -95,7 +95,7 @@ plotGeneCoverage <- function(IP_BAMs, INPUT_BAMs, size.IP, size.INPUT,X, geneNam
 
   chr <- unique(as.character(as.data.frame(geneModel[geneName])$seqnames))
 
-  p1 <- "ggplot(data = cov.data,aes(genome_location))+geom_line(aes(y=Input,colour =Group))+geom_ribbon(aes(ymax = IP,ymin=0,fill=Group), alpha = 0.4)+labs(y=\"normalized coverage\",x = paste0( \"Genome location on chromosome: \", chr) )+scale_x_continuous(breaks = round(seq(min(cov.data$genome_location), max(cov.data$genome_location), by = ((max(cov.data$genome_location)-min(cov.data$genome_location))/10) )),expand = c(0,0,0,0))+theme_bw() + theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+  p1 <- "ggplot(data = cov.data,aes(genome_location))+geom_line(aes(y=Input,colour =Group))+geom_ribbon(aes(ymax = IP,ymin=0,fill=Group), alpha = 0.4)+labs(y=\"normalized coverage\",x = paste0( \"Genome location on chromosome: \", chr) )+scale_x_continuous(breaks = round(seq(min(cov.data$genome_location), max(cov.data$genome_location), by = ((max(cov.data$genome_location)-min(cov.data$genome_location))/5) )),expand = c(0,0,0,0))+theme_bw() + theme(panel.border = element_blank(), panel.grid.major = element_blank(),
   panel.grid.minor = element_blank(), axis.line = element_line(colour = \"black\"),  axis.ticks = element_line(colour = \"black\"), axis.title = element_text(color = \"black\", size = 18),axis.text = element_text(color = \"black\", size = 15) ) + scale_fill_nejm(name=\"IP\") + scale_colour_nejm(name=\"INPUT\")+ scale_y_continuous(expand = c(0, 0))"
 
   p2 <- .getGeneModelAnno(geneModel,geneName,GTF,ZoomIn)
@@ -111,7 +111,7 @@ plotGeneCoverage <- function(IP_BAMs, INPUT_BAMs, size.IP, size.INPUT,X, geneNam
       plotSNP_new <- max(cov.data$genome_location) + 0.02*length(cov.data$genome_location)
       p3 <- "annotate(\"rect\",xmin = ( plotSNP_new -2 ), xmax = ( plotSNP_new +2 ) , ymin = -0.08*yscale, ymax = -0.02*yscale, alpha = .99, colour = \"red\")+
       annotate(\"text\", ,x=plotSNP_new, y = -0.1*yscale, label= paste0(  chr,\":\",as.character(plotSNP$loc)), alpha = .99, colour = \"black\")+
-      annotate(\"text\", ,x=plotSNP_new, y = 0, label=as.character(plotSNP$anno), alpha = .99, colour = \"blue\")+scale_x_continuous(breaks = round(seq(min(cov.data$genome_location), max(cov.data$genome_location), by = ((max(cov.data$genome_location)-min(cov.data$genome_location))/10) )),expand = c(0,0,0.06,0))"
+      annotate(\"text\", ,x=plotSNP_new, y = 0, label=as.character(plotSNP$anno), alpha = .99, colour = \"blue\")+scale_x_continuous(breaks = round(seq(min(cov.data$genome_location), max(cov.data$genome_location), by = ((max(cov.data$genome_location)-min(cov.data$genome_location))/5) )),expand = c(0,0,0.06,0))"
       p <- paste(p1,p2,p3,sep = "+")
 
     }else if( plotSNP$loc<min(cov.data$genome_location) ){
@@ -119,7 +119,7 @@ plotGeneCoverage <- function(IP_BAMs, INPUT_BAMs, size.IP, size.INPUT,X, geneNam
       plotSNP_new <- min(cov.data$genome_location) - 0.02*length(cov.data$genome_location)
       p3 <- "annotate(\"rect\",xmin = ( plotSNP_new -2 ), xmax = ( plotSNP_new +2 ) , ymin = -0.08*yscale, ymax = -0.02*yscale, alpha = .99, colour = \"red\")+
       annotate(\"text\", ,x=plotSNP_new, y = -0.1*yscale, label= paste0(  chr,\":\",as.character(plotSNP$loc)), alpha = .99, colour = \"black\",fontface =2)+
-      annotate(\"text\", ,x=plotSNP_new, y = 0, label=as.character(plotSNP$anno), alpha = .99, colour = \"blue\",fontface =2)+scale_x_continuous(breaks = round(seq(min(cov.data$genome_location), max(cov.data$genome_location), by = ((max(cov.data$genome_location)-min(cov.data$genome_location))/10) )),expand = c(0.06,0,0,0))"
+      annotate(\"text\", ,x=plotSNP_new, y = 0, label=as.character(plotSNP$anno), alpha = .99, colour = \"blue\",fontface =2)+scale_x_continuous(breaks = round(seq(min(cov.data$genome_location), max(cov.data$genome_location), by = ((max(cov.data$genome_location)-min(cov.data$genome_location))/5) )),expand = c(0.06,0,0,0))"
       p <- paste(p1,p2,p3,sep = "+")
 
     }else{ ## if the SNP is within the gene
